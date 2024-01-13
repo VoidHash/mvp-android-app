@@ -36,6 +36,8 @@ android {
 }
 
 val gsonVersion = "2.10.1"
+val okhttpVersion = "4.10.0"
+val retrofitVersion = "2.9.0"
 
 dependencies {
 
@@ -44,7 +46,17 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
+    //Gson
     implementation ("com.google.code.gson:gson:$gsonVersion")
+
+    //OkHttp Library
+    implementation ("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
+
+    //Retrofit Library
+    implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

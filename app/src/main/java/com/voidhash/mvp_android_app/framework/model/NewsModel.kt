@@ -1,4 +1,4 @@
-package com.voidhash.mvp_android_app.model
+package com.voidhash.mvp_android_app.framework.model
 
 import com.google.gson.annotations.SerializedName
 
