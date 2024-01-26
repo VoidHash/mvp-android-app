@@ -49,7 +49,7 @@ val roomVersion = "2.4.1"
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -73,8 +73,10 @@ dependencies {
     //Picasso
     implementation ("com.squareup.picasso:picasso:2.8")
 
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
 
     testImplementation("junit:junit:4.13.2")

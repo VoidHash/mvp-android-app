@@ -6,7 +6,7 @@ import com.voidhash.mvp_android_app.framework.model.NewsModel
 interface NewsContract {
 
     interface View: BaseContract.View {
-        fun showArticleList(abstractList: MutableList<ArticlesItem?>?)
+        fun showArticleList(abstractList: List<ArticlesItem?>?)
     }
 
     interface Presenter: BaseContract.Presenter {

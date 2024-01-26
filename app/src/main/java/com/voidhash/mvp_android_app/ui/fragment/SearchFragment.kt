@@ -36,7 +36,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dataSource = NewsDataSource()
+        val dataSource = NewsDataSource(requireContext())
         presenter = SearchPresenter(this, dataSource)
         binding.rvSearch.apply {
             adapter = mainAdapter

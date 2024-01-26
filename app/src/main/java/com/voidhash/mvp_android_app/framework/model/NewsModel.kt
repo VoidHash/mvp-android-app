@@ -1,8 +1,11 @@
 package com.voidhash.mvp_android_app.framework.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 data class NewsModel(
 
@@ -24,10 +27,14 @@ data class Source(
 
 	@field:SerializedName("id")
 	val id: String? = null
-) : Parcelable
+) : Parcelable, Serializable
 
 @Parcelize
+@Entity(tableName = "articles")
 data class ArticlesItem(
+
+	@PrimaryKey(autoGenerate = true)
+	val id: Int? = null,
 
 	@field:SerializedName("publishedAt")
 	val publishedAt: String? = null,
@@ -52,4 +59,4 @@ data class ArticlesItem(
 
 	@field:SerializedName("content")
 	val content: String? = null
-) : Parcelable
+) : Parcelable, Serializable

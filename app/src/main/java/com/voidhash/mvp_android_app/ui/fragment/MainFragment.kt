@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.voidhash.mvp_android_app.R
@@ -22,7 +23,7 @@ class MainFragment : Fragment(), NewsContract.View {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var presenter: NewsContract.Presenter
-    private val dataSource = NewsDataSource()
+    private val dataSource = NewsDataSource(requireContext())
     private var mainAdapter = MainAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +44,10 @@ class MainFragment : Fragment(), NewsContract.View {
                 )
             )
         }
+        mainAdapter.setOnClickListener { article ->
+            val direction = MainFragmentDirections.actionMainFragmentToArticleFragment(article)
+            findNavController().navigate(direction)
+        }
         presenter = NewsPresenter(this, dataSource)
         presenter.requestAll()
     }
@@ -59,7 +64,7 @@ class MainFragment : Fragment(), NewsContract.View {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    override fun showArticleList(abstractList: MutableList<ArticlesItem?>?) {
+    override fun showArticleList(abstractList: List<ArticlesItem?>?) {
         mainAdapter.differ.submitList(abstractList?.toList())
     }
 }

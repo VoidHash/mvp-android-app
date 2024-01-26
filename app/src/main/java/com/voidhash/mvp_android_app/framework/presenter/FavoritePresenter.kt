@@ -7,15 +7,15 @@ class FavoritePresenter(val view: NewsContract.View, private val dataSource: New
     : FavoriteContract.Presenter {
 
     fun getAll() {
-        //this.dataSource.getAllArticle(this)
+        this.dataSource.getAllArticle(view)
     }
 
     fun saveArticle(article: ArticlesItem) {
-        //this.dataSource.saveArticle(article)
+        this.dataSource.saveArticle(article)
     }
 
     fun deleteArticle(article: ArticlesItem) {
-        //this.dataSource.deleteArticle(article)
+        this.dataSource.deleteArticle(article)
     }
 
     override fun onSuccess(articles: List<ArticlesItem>) {
