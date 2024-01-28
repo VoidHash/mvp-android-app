@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,7 +20,7 @@ import com.voidhash.mvp_android_app.framework.util.UtilQueryTextListener
 import com.voidhash.mvp_android_app.ui.adapter.MainAdapter
 
 
-class SearchFragment : Fragment(), SearchContract.View {
+class SearchFragment : Fragment(), SearchContract.View, MainAdapter.MainAdapterListener {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var presenter: SearchContract.Presenter
@@ -29,6 +30,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,12 +41,14 @@ class SearchFragment : Fragment(), SearchContract.View {
         val dataSource = NewsDataSource(requireContext())
         presenter = SearchPresenter(this, dataSource)
         binding.rvSearch.apply {
+            mainAdapter.listener = this@SearchFragment
             adapter = mainAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             )
         }
+
         binding.searchNews.setOnQueryTextListener(
             UtilQueryTextListener(
                 this.lifecycle
@@ -57,11 +61,10 @@ class SearchFragment : Fragment(), SearchContract.View {
                 }
             }
         )
+    }
 
-        mainAdapter.setOnClickListener { article ->
-            val direction = SearchFragmentDirections.actionSearchFragmentToArticleFragment(article)
-            findNavController().navigate(direction)
-        }
+    override fun showArticles(articles: List<ArticlesItem?>) {
+        mainAdapter.differ.submitList(articles.toList())
     }
 
     override fun showProgressBar() {
@@ -76,7 +79,8 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.rvProgressBarSearch.visibility = View.INVISIBLE
     }
 
-    override fun showArticles(articles: List<ArticlesItem>) {
-        mainAdapter.differ.submitList(articles.toList())
+    override fun onItemClick(article: ArticlesItem) {
+        val direction = SearchFragmentDirections.actionSearchFragmentToArticleFragment(article)
+        findNavController().navigate(direction)
     }
 }

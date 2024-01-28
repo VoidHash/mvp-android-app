@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
+            R.id.home_menu -> { navController.navigate(R.id.mainFragment)}
             R.id.search_menu -> { navController.navigate(R.id.searchFragment) }
             R.id.favorite_menu -> { navController.navigate(R.id.favoriteFragment) }
         }

@@ -1,5 +1,6 @@
 package com.voidhash.mvp_android_app.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +14,14 @@ import com.voidhash.mvp_android_app.databinding.FragmentArticleBinding
 import com.voidhash.mvp_android_app.databinding.ItemNewsBinding
 import com.voidhash.mvp_android_app.framework.model.ArticlesItem
 import com.voidhash.mvp_android_app.framework.network.NewsDataSource
+import com.voidhash.mvp_android_app.framework.presenter.BaseContract
 import com.voidhash.mvp_android_app.framework.presenter.FavoriteContract
 import com.voidhash.mvp_android_app.framework.presenter.FavoritePresenter
 import com.voidhash.mvp_android_app.framework.presenter.NewsContract
+import com.voidhash.mvp_android_app.ui.activity.MainActivity
 
 
-class ArticleFragment : Fragment() {
+class ArticleFragment : Fragment(), NewsContract.View {
 
     private val args: ArticleFragmentArgs by navArgs()
     private lateinit var presenter: FavoritePresenter
@@ -39,6 +42,8 @@ class ArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter = FavoritePresenter(this ,dataSource)
         val articles = args.articleParcelable
 
         binding.webView.apply {
@@ -55,5 +60,17 @@ class ArticleFragment : Fragment() {
                 Snackbar.LENGTH_LONG
             ).show()
         }
+    }
+
+    override fun showArticleList(abstractList: List<ArticlesItem?>?) {
+    }
+
+    override fun showProgressBar() {
+    }
+
+    override fun showFailure(message: String) {
+    }
+
+    override fun hideProgressBar() {
     }
 }

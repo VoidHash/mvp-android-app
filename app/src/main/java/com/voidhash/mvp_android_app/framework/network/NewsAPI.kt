@@ -15,6 +15,7 @@ interface NewsAPI {
         @Query("apiKey") apiKey: String = "97d65032c20b41b0814dc898b2eab8c2"
     ): Response<NewsModel>
 
+    @GET("/v2/everything")
     suspend fun searchNews(
         @Query("q") searchQuery: String,
         @Query("page") pageNumber: Int = 1,

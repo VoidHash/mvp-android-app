@@ -9,18 +9,19 @@ class SearchPresenter(
 ): SearchContract.Presenter {
 
     override fun search(term: String) {
-        TODO("Not yet implemented")
+        this.view.showProgressBar()
+        this.dataSource.searchNews(term, this)
     }
 
     override fun onSuccess(newsModel: NewsModel) {
-        TODO("Not yet implemented")
+        newsModel.articles?.toList()?.let { this.view.showArticles(it) }
     }
 
     override fun onError(message: String) {
-        TODO("Not yet implemented")
+        this.view.showFailure(message)
     }
 
     override fun onComplete() {
-        TODO("Not yet implemented")
+        this.view.hideProgressBar()
     }
 }

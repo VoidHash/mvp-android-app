@@ -4,19 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuView.ItemView
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.voidhash.mvp_android_app.databinding.ItemNewsBinding
 import com.voidhash.mvp_android_app.framework.model.ArticlesItem
+import com.voidhash.mvp_android_app.ui.fragment.MainFragmentDirections
 
 class MainAdapter: RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
+    lateinit var listener: MainAdapterListener
     private lateinit var context: Context
-
-    private var onItemClickListener: ((ArticlesItem) -> Unit)? = null
 
     private val differCallback = object : DiffUtil.ItemCallback<ArticlesItem>() {
         override fun areItemsTheSame(oldItem: ArticlesItem, newItem: ArticlesItem): Boolean {
@@ -49,18 +49,17 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.ViewHolder>() {
                 Picasso.get()
                     .load(this.urlToImage)
                     .into(binding.imgArticle)
-            }
-            setOnClickListener { article ->
-                onItemClickListener?.let { click ->
-                    click(article)
+
+                binding.layoutNews.setOnClickListener {
+                    listener.onItemClick(this)
                 }
             }
         }
     }
 
-    fun setOnClickListener(listener: (ArticlesItem) -> Unit) {
-        onItemClickListener = listener
-    }
-
     inner class ViewHolder(val binding: ItemNewsBinding): RecyclerView.ViewHolder(binding.root)
+
+    interface MainAdapterListener {
+        fun onItemClick(article: ArticlesItem)
+    }
 }

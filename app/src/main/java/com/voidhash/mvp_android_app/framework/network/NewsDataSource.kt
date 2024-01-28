@@ -4,7 +4,6 @@ import android.content.Context
 import com.voidhash.mvp_android_app.framework.db.ArticleDatabase
 import com.voidhash.mvp_android_app.framework.db.NewsRepository
 import com.voidhash.mvp_android_app.framework.model.ArticlesItem
-import com.voidhash.mvp_android_app.framework.presenter.FavoriteContract
 import com.voidhash.mvp_android_app.framework.presenter.NewsContract
 import com.voidhash.mvp_android_app.framework.presenter.SearchContract
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.wait
 
 class NewsDataSource(context: Context) {
 
@@ -27,6 +25,7 @@ class NewsDataSource(context: Context) {
                 val response = RetrofitInstance.api.getBreakingNews("us")
                 if(response.isSuccessful) {
                     response.body()?.let { newsResponse ->
+                        newsResponse.articles?.removeIf { it?.urlToImage == null }
                         callback.onSuccess(newsResponse)
                     }
                     callback.onComplete()
@@ -42,19 +41,15 @@ class NewsDataSource(context: Context) {
     }
 
     fun searchNews(term: String, callback: SearchContract.Presenter) {
-        GlobalScope.launch {
-            try {
-                val response = RetrofitInstance.api.searchNews(term)
-                if(response.isSuccessful) {
-                    response.body()?.let { newsResponse ->
-                        callback.onSuccess(newsResponse)
-                    }
-                } else {
-                    callback.onError(response.message())
+        CoroutineScope(Dispatchers.Main).launch {
+            val response = RetrofitInstance.api.searchNews(term)
+            if (response.isSuccessful) {
+                response.body()?.let { newsResponse ->
+                    callback.onSuccess(newsResponse)
                 }
                 callback.onComplete()
-            } catch (e: Exception) {
-                callback.onError(e.message.toString())
+            } else {
+                callback.onError(response.message())
                 callback.onComplete()
             }
         }
